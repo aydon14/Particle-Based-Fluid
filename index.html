@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D Fluid Simulation - WebGPU Compute</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #canvas { background: #000; cursor: crosshair; }
+        #controls {
+            position: absolute; top: 10px; left: 10px;
+            background: rgba(0, 0, 0, 0.9); color: #0f0;
+            padding: 5px; border-radius: 8px; font-size: 12px;
+            border: 1px solid #0f0; max-width: 250px; padding-top: 0; padding-bottom: 0;
+        }
+        #controls.hidden { display: none; }
+        #stats.hidden { display: none; }
+        .slider-container { margin: 3px 0; }
+        .slider-container label { display: block; margin-bottom: 3px; font-size: 11px; }
+        input[type="range"] { width: 100%; }
+        button {
+            background: #0f0; border: none; padding: 5px 10px; margin: 5px 5px 0 0;
+            cursor: pointer; border-radius: 4px; font-size: 11px; color: #000; font-weight: bold;
+        }
+        button:hover { background: #0ff; }
+        .checkbox-row { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <div id="controls" aria-label="Controls (press X to toggle)">
+        <div class="slider-container">
+            <label>Gravity: <span id="gravityVal">-12</span></label>
+            <input type="range" id="gravity" min="-30" max="0" value="-12" step="0.5">
+        </div>
+        <div class="slider-container">
+            <label>Interaction: <span id="interactionVal">90</span></label>
+            <input type="range" id="interaction" min="0" max="200" value="90" step="5">
+        </div>
+        <div class="slider-container">
+            <label>Particles: <span id="particleCountSliderVal">5000</span></label>
+            <input type="range" id="particleCountSlider" min="1000" max="200000" value="5000" step="100">
+            <button id="applyParticles" style="margin-top: 5px; width: 100%;">Apply & Reset</button>
+        </div>
+        <div class="slider-container">
+            <label>Particle size: <span id="particleSizeVal">0.06</span></label>
+            <input type="range" id="particleSize" min="0.012" max="0.12" value="0.06" step="0.001">
+        </div>
+        <div class="checkbox-row">
+            <input type="checkbox" id="centerGravity">
+            <label for="centerGravity" style="user-select:none;">Center gravity (radial)</label>
+        </div>
+        <p style="margin-top:6px;color:#0aa;">Press X to hide/show menu</p>
+    </div>
+
+    <div id="stats">
+        <div>FPS: <span id="fps">0</span></div>
+        <div>Particles: <span id="particleCount">0</span></div>
+        <div>Status: <span id="status">Running</span></div>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
