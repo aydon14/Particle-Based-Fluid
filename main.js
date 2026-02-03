@@ -313,7 +313,7 @@ async function initWebGPU() {
       ]
     });
 
-    document.getElementById("particleCount").textContent = CONFIG.numParticles;
+    // document.getElementById("particleCount").textContent = CONFIG.numParticles;
   }
 
   // Always link size to physics with stability scaling
@@ -362,7 +362,6 @@ async function initWebGPU() {
   let dynamicSubsteps = CONFIG.iterationsPerFrame;
 
   const controlsEl = document.getElementById("controls");
-  const statsEl = document.getElementById("stats");
   const particleSizeInput = document.getElementById("particleSize");
   const particleSizeVal = document.getElementById("particleSizeVal");
 
@@ -380,14 +379,12 @@ async function initWebGPU() {
     if (e.code === "Space") {
       e.preventDefault();
       isPaused = !isPaused;
-      document.getElementById("status").textContent = isPaused ? "Paused" : "Running";
     }
     if (e.code === "KeyR") {
       device.queue.writeBuffer(particlesBuffer, 0, spawnData(CONFIG.numParticles).buffer);
     }
     if (e.code === "KeyX") {
       controlsEl.classList.toggle("hidden");
-      statsEl.classList.toggle("hidden");
     }
   });
 
@@ -421,7 +418,7 @@ async function initWebGPU() {
     const newCount = parseInt(document.getElementById("particleCountSlider").value, 10);
     await resizeParticles(newCount);
   });
-  document.getElementById("particleCount").textContent = CONFIG.numParticles;
+  // document.getElementById("particleCount").textContent = CONFIG.numParticles;
 
   // Always-link size to physics
   particleSizeInput.addEventListener("input", async (e) => {
@@ -432,8 +429,6 @@ async function initWebGPU() {
 
   // Loop
   let last = performance.now();
-  let fpsAccum = 0, fpsFrames = 0;
-
   function frame() {
     const now = performance.now();
     let dt = (now - last) / 1000;
@@ -489,12 +484,6 @@ async function initWebGPU() {
       renderPass.end();
 
       device.queue.submit([encoder.finish()]);
-    }
-
-    fpsAccum += dt; fpsFrames++;
-    if (fpsAccum >= 0.5) {
-      document.getElementById("fps").textContent = Math.round(fpsFrames / fpsAccum);
-      fpsAccum = 0; fpsFrames = 0;
     }
 
     requestAnimationFrame(frame);
